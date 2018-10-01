@@ -1,12 +1,14 @@
 	package com.killok.librarian.dao;
 	
 	import java.sql.Date;
+
 	import java.sql.ResultSet;
 	import java.sql.SQLException;
 	import java.util.ArrayList;
 	import java.util.List;
-	
-	import org.springframework.jdbc.core.ResultSetExtractor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ResultSetExtractor;
 	import org.springframework.stereotype.Component;
 	
 	import com.killok.librarian.entity.BookLoan;
@@ -14,6 +16,24 @@
 	
 	@Component
 	public class BookLoanDAO extends BaseDAO<BookLoan> implements ResultSetExtractor<List<BookLoan>>{
+		
+		@Autowired
+		BookDAO bdao;
+
+		@Autowired
+		AuthorDAO adao;
+		
+		@Autowired
+		LibBranchDAO branchdao;
+		
+		@Autowired
+		BookCopyDAO copydao;
+		
+		@Autowired
+		BookLoanDAO loandao;
+
+		@Autowired
+		BorrowerDAO bordao;
 	
 		public void addBookLoan(BookLoan bookLoan)
 				throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
@@ -37,6 +57,7 @@
 		
 		public List<BookLoan> readAllbookLoansByBorrower(int borrowerId)
 				throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+			
 			return libraryTemplate.query("Select * from tbl_book_loans where cardNo = ?", new Object[]{borrowerId}, this);
 		}
 		
@@ -63,6 +84,14 @@
 				bookLoan.setDateOut(rs.getDate("dateOut"));
 				bookLoan.setDueDate(rs.getDate("dueDate"));
 				bookLoan.setDateIn(rs.getDate("dateIn"));
+				try {
+					bookLoan.setBook(bdao.readBookbyPk(rs.getInt("bookId")));
+					bookLoan.setBorrower(bordao.readBorrowerByPK(rs.getInt("cardNo")));
+					bookLoan.setBranch(branchdao.readLibBranchByPK(rs.getInt("branchId")));
+				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				bookLoans.add(bookLoan);
 			}
 			return bookLoans;

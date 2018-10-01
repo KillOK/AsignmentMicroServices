@@ -144,7 +144,7 @@
 		public List<BookCopy> getBookCopies(@RequestParam(required=false) Integer branchId,@RequestParam(required=false) Integer bookId) {
 			List<BookCopy> copies = new ArrayList<>();
 			try {
-				if ((branchId!=null&&branchId!=0)&&(bookId==0||bdao.readBookbyPk(bookId)==null)) {
+				if ((branchId!=null/*&&branchId!=0*/)&&(/*bookId==0||*/bookId==null)) {
 					copies = copydao.readAllBookCopiesInBranch(branchdao.readLibBranchByPK(branchId));
 				} else if((branchId!=null&&branchId!=0)&&(bdao.readBookbyPk(bookId)!=null)){
 					copies= copydao.readAllbookCopiesByName(bdao.readBookbyPk(bookId), branchdao.readLibBranchByPK(branchId));
