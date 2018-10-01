@@ -18,6 +18,7 @@ public class BookLoanId implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -8183884590862144236L;
+	
 	@JoinColumn(name="bookId",  insertable = false, updatable = false)
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Book book;

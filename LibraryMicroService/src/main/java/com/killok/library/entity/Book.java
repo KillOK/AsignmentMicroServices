@@ -123,7 +123,7 @@ public class Book {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
-//		result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
+		result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -141,11 +141,11 @@ public class Book {
 				return false;
 		} else if (!bookId.equals(other.bookId))
 			return false;
-//		if (publisher == null) {
-//			if (other.publisher != null)
-//				return false;
-//		} else if (!publisher.equals(other.publisher))
-//			return false;
+		if (publisher == null) {
+			if (other.publisher != null)
+				return false;
+		} else if (!publisher.equals(other.publisher))
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;

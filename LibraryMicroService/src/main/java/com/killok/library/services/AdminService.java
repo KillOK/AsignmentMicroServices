@@ -371,6 +371,7 @@ public class AdminService {
 		return borrowers;
 	}
 	
+
 	
 	@Transactional
 	@RequestMapping(value = "/lms/updateBorrower", method = RequestMethod.POST, consumes = "application/json")
@@ -430,13 +431,37 @@ public class AdminService {
 		}
 		return sublishers;
 	}
-	//////////////////////Doesn't work...///////////////////////////////////////////////////////////////////
-	@Transactional
+	
+//	Now everything works, was mistake in JSON
+//	here example for execution
+//	
+//	{
+//        "bookLoanId": {
+//            "book": {
+//                "title": "Harry Potter and half-blood prince",
+//                "bookId": 2
+//            },
+//            "branch": {
+//                "branchId": 2,
+//                "branchName": "Egypt National Library",
+//                "branchAdress": "Kairo"
+//            },
+//            "borrower":{
+//            	"cardNo":2}
+//            	,
+//            "dueDate": "2019-10-01"
+//        },
+//        "dateOut": "2001-09-24",
+//        "dateIn": "2018-09-24"
+//    }
+	
+	
 	@RequestMapping(value = "/lms/updateBookLoan", method = RequestMethod.POST, consumes = "application/json")
 	public String saveBookLoan(@RequestBody BookLoan loan) {
 		String returnString = "";
 		try {
 			if (loan.getBookLoanId()!=null) {
+				System.out.println(loan.getBookLoanId().getBorrower().getCardNo()+" "+loan.getBookLoanId().getBorrower().getName()+" "+loan.getDateIn()+" "+loan.getDateOut());
 				loanRepository.save(loan);
 				returnString = "BookLoan updated sucessfully";
 			} else {
@@ -448,8 +473,8 @@ public class AdminService {
 		}
 		return returnString;
 	}
-	
-	@Transactional
+
+
 	@RequestMapping(value = "/lms/overrideDueDate", method = RequestMethod.POST, consumes = "application/json")
 	public String overrideDueDate(@RequestBody BookLoan loan) {
 		String returnString = "";

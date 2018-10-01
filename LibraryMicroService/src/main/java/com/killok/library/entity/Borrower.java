@@ -1,5 +1,6 @@
 package com.killok.library.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,8 +17,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="tbl_borrower", catalog="library")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name", scope=Author.class)
-public class Borrower {
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="cardNo", scope=Borrower.class)
+public class Borrower implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -28,7 +29,8 @@ public class Borrower {
 	private String adress;
 	private String phone;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="bookLoanId.branch")
+//	@Column(name="cardNo")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="bookLoanId.borrower")
 	private List<BookLoan> bookLoans;
 	public Borrower() {}
 	public Borrower(String name, String adress, String phone) {

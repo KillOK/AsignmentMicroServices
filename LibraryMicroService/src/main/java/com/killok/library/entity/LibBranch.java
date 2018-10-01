@@ -32,15 +32,16 @@ public class LibBranch implements Serializable{
 	@Column(name="branchAddress")
 	private String branchAdress;
 	
-	@Column(name="bookId")
 //	@JoinColumns({
 //		@JoinColumn(name = "bookId", referencedColumnName = "bookId",  insertable = false, updatable = false)
 //	,
 //		@JoinColumn(name = "branchId", referencedColumnName = "branchId",  insertable = false, updatable = false)
 //	})
+	@Column(name="bookId")
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="bookCopyId.branchId")
 	private List<BookCopy> bookCopies;
 	
+	@Column(name="branchId")
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="bookLoanId.branch")
 	private List<BookLoan> bookLoans;
 	
