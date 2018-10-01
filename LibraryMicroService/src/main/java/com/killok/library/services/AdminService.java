@@ -474,16 +474,16 @@ public class AdminService {
 		return returnString;
 	}
 
-
+	@Transactional
 	@RequestMapping(value = "/lms/overrideDueDate", method = RequestMethod.POST, consumes = "application/json")
 	public String overrideDueDate(@RequestBody BookLoan loan) {
 		String returnString = "";
 		try {
 			if (loan.getBookLoanId()!=null) {
 				BookLoanId id = loan.getBookLoanId();
-				id.setDueDate(new Date(loan.getBookLoanId().getDueDate().getTime()+(7*24*3600*1000)));
-				loan.setBookLoanId(id);
-				loanRepository.save(loan);
+				System.out.println(id.getBook().getBookId()+" "+ id.getBranch().getBranchId()+" "+  id.getBorrower().getCardNo()+" "+ id.getDueDate()+" "+ new Date((id.getDueDate().getTime()+(7*24*3600*1000))));
+				loanRepository.overrideDueDate(id.getBook().getBookId(), id.getBranch().getBranchId(), id.getBorrower().getCardNo(), loan.getDateOut(), new Date(id.getDueDate().getTime()+(7*24*3600*1000)));
+				loanRepository.flush();
 				returnString = "BookLoan updated sucessfully";
 			} else {
 				returnString = "Please send correct data";
