@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -25,7 +27,9 @@ public class Borrower {
 	@Column(name="address")
 	private String adress;
 	private String phone;
-//	private List<BookLoan> bookLoans;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="bookLoanId.branch")
+	private List<BookLoan> bookLoans;
 	public Borrower() {}
 	public Borrower(String name, String adress, String phone) {
 		super();
@@ -57,12 +61,12 @@ public class Borrower {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-//	public List<BookLoan> getBookLoans() {
-//		return bookLoans;
-//	}
-//	public void setBookLoans(List<BookLoan> bookLoans) {
-//		this.bookLoans = bookLoans;
-//	}
+	public List<BookLoan> getBookLoans() {
+		return bookLoans;
+	}
+	public void setBookLoans(List<BookLoan> bookLoans) {
+		this.bookLoans = bookLoans;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

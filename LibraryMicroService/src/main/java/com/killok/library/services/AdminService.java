@@ -1,5 +1,6 @@
 package com.killok.library.services;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.killok.library.entity.Author;
 import com.killok.library.entity.Book;
 import com.killok.library.entity.BookCopy;
+import com.killok.library.entity.BookLoan;
+import com.killok.library.entity.BookLoanId;
 import com.killok.library.entity.Borrower;
 import com.killok.library.entity.Genre;
 import com.killok.library.entity.Publisher;
 import com.killok.library.repositories.AuthorRepository;
 import com.killok.library.repositories.BookCopyRepository;
+import com.killok.library.repositories.BookLoanRepository;
 import com.killok.library.repositories.BookRepository;
 import com.killok.library.repositories.BorrowerRepository;
 import com.killok.library.repositories.GenreRepoSitory;
@@ -393,4 +397,95 @@ public class AdminService {
 	
 	//////////////////////////////////////////BookLoan//////////////////////////////////////////////////////////
 	
+	@Autowired
+	BookLoanRepository loanRepository;
+	
+	
+	@RequestMapping(value = "/lms/getBookLoans/", method = RequestMethod.GET, produces = "application/json")
+	public List<BookLoan> readAllBookLoans() {
+		List<BookLoan> loans = new ArrayList<>();
+		try {
+			loans = (List<BookLoan>) loanRepository.findAll();
+		} catch (Exception e) {
+			loans = (List<BookLoan>) loanRepository.findAll();
+			e.printStackTrace();
+		}
+		return loans;
+	}
+	
+	@RequestMapping(value = "/lms/getBookLoans", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<BookLoan> readBookLoans(
+			@RequestParam(value="bookId", required = false) Integer bookId,
+			@RequestParam(value="branchId", required = false) Integer branchId,
+			@RequestParam(value="cardNo", required = false) Integer cardNo,
+			@RequestParam(value="dueDate", required = false) Date dueDate) {
+		List<BookLoan> sublishers = new ArrayList<>();
+		try {
+		if (bookId!=null&&branchId!=null&&cardNo!=null&&dueDate!=null) {
+				sublishers = loanRepository.readBookLoanById(branchId, cardNo, bookId, dueDate);
+			} else sublishers = (List<BookLoan>) loanRepository.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sublishers;
+	}
+	//////////////////////Doesn't work...///////////////////////////////////////////////////////////////////
+	@Transactional
+	@RequestMapping(value = "/lms/updateBookLoan", method = RequestMethod.POST, consumes = "application/json")
+	public String saveBookLoan(@RequestBody BookLoan loan) {
+		String returnString = "";
+		try {
+			if (loan.getBookLoanId()!=null) {
+				loanRepository.save(loan);
+				returnString = "BookLoan updated sucessfully";
+			} else {
+				returnString = "Please send correct data";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnString = "Error... try again";
+		}
+		return returnString;
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/lms/overrideDueDate", method = RequestMethod.POST, consumes = "application/json")
+	public String overrideDueDate(@RequestBody BookLoan loan) {
+		String returnString = "";
+		try {
+			if (loan.getBookLoanId()!=null) {
+				BookLoanId id = loan.getBookLoanId();
+				id.setDueDate(new Date(loan.getBookLoanId().getDueDate().getTime()+(7*24*3600*1000)));
+				loan.setBookLoanId(id);
+				loanRepository.save(loan);
+				returnString = "BookLoan updated sucessfully";
+			} else {
+				returnString = "Please send correct data";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnString = "Error... try again";
+		}
+		return returnString;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
