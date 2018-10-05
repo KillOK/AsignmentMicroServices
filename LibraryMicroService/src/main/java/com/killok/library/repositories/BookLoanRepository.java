@@ -20,8 +20,9 @@ import com.killok.library.entity.BookLoanId;
 		@Query("from BookLoan where branchId = :newbranchId and cardNo = :newCardNo and bookId = :newBookId and dueDate = :newDueDate")
 		public List<BookLoan> readBookLoanById(@Param(value = "newbranchId") int branchId, @Param(value = "newCardNo")int newCardNo, @Param(value = "newBookId")int newBookId , @Param(value = "newDueDate")Date newDueDate );                       
 		
-		@Modifying (flushAutomatically=true)
-		@Query("update BookLoan set dueDate =:newDate where cardNo =:card and branchId =:branch and bookId =:book and dueDate =:oldDate")
+		@Transactional
+		@Modifying (flushAutomatically = true, clearAutomatically = true)
+		@Query(value="update tbl_book_loans set dueDate =:newDate where cardNo =:card and branchId =:branch and bookId =:book and dueDate =:oldDate", nativeQuery=true)
 		void overrideDueDate(@Param("book") int book, @Param("branch") int branch, @Param("card") int card, @Param("oldDate") Date oldDate, @Param("newDate") Date newDate);
 		
 	}

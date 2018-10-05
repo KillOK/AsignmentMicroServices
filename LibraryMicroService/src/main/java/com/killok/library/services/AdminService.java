@@ -473,6 +473,8 @@ public class AdminService {
 		}
 		return returnString;
 	}
+	
+	//Added new Date(id.getDueDate().getTime()+(24*3600*1000)) instead id.getDueDate(), because it lost one day, after parsing of json...
 
 	@Transactional
 	@RequestMapping(value = "/lms/overrideDueDate", method = RequestMethod.POST, consumes = "application/json")
@@ -482,7 +484,7 @@ public class AdminService {
 			if (loan.getBookLoanId()!=null) {
 				BookLoanId id = loan.getBookLoanId();
 				System.out.println(id.getBook().getBookId()+" "+ id.getBranch().getBranchId()+" "+  id.getBorrower().getCardNo()+" "+ id.getDueDate()+" "+ new Date((id.getDueDate().getTime()+(7*24*3600*1000))));
-				loanRepository.overrideDueDate(id.getBook().getBookId(), id.getBranch().getBranchId(), id.getBorrower().getCardNo(), loan.getDateOut(), new Date(id.getDueDate().getTime()+(7*24*3600*1000)));
+				loanRepository.overrideDueDate(id.getBook().getBookId(), id.getBranch().getBranchId(), id.getBorrower().getCardNo(), new Date(id.getDueDate().getTime()+(24*3600*1000)), new Date(id.getDueDate().getTime()+(7*24*3600*1000)));
 				loanRepository.flush();
 				returnString = "BookLoan updated sucessfully";
 			} else {
