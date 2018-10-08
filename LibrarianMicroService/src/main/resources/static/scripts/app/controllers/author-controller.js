@@ -87,8 +87,10 @@ LibraryApp.controller("authorController", function($scope, $http,
 		});
     };
     
+    $scope.editAuthorModal = function(author){
+		$scope.author = author;
+	}
     
-
 	$scope.deleteAuthor = function(authorId) {
 		var authorToDelete = {
 			"authorId" : authorId

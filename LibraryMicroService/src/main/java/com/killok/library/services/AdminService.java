@@ -66,6 +66,7 @@ public class AdminService {
 		List<Author> authors = new ArrayList<>();
 		try {
 			if (!searchString.isEmpty()) {
+				searchString = "%"+searchString+"%";
 				authors = authorRepo.readAuthorsByName(searchString);
 			} else {
 				authors = (List<Author>) authorRepo.findAll();
