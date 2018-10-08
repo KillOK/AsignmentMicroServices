@@ -5,7 +5,7 @@ LibraryApp.controller("genreController", function($scope, $http,
 		libraryService.initGenre(
 				libConstants.ADMIN_RS_HOST + libConstants.INIT_GENRE).then(
 				function(result) {
-					console.log("inside");
+					console.log($location.path());
 					$scope.genre = result;
 				});
 		
@@ -31,6 +31,7 @@ LibraryApp.controller("genreController", function($scope, $http,
 		libraryService.getAll(
 				libConstants.ADMIN_RS_HOST + libConstants.READ_ALL_GENRES).then(
 				function(result) {
+					console.log($location.path());
 					$scope.genres = result;
 				});
 	}

@@ -15,6 +15,21 @@ LibraryApp.config(["$routeProvider", function($routProvider){
     .when("/borrower",{
     	templateUrl:"borrowerbranch/borrower.html"
     })
+    .when("/addbooks",{
+    	templateUrl:"adminbranch/addBook.html"
+    })
+    .when("/addauthor",{
+    	templateUrl:"adminbranch/addAuthor.html"
+    })
+    .when("/addgenre",{
+    	templateUrl:"adminbranch/addGenre.html"
+    })
+    .when("/addbranch",{
+    	templateUrl:"adminbranch/addBranch.html"
+    })
+    .when("/addborrower",{
+    	templateUrl:"adminbranch/addBorrower.html"
+    })
     .when("/booksCRUD",{
     	templateUrl:"adminbranch/booksCRUD.html"
     })
@@ -32,20 +47,5 @@ LibraryApp.config(["$routeProvider", function($routProvider){
     })
     .when("/overrideDueDate",{
     	templateUrl:"adminbranch/overrideDueDate.html"
-    })
-    .when("/addbooks",{
-    	templateUrl:"adminbranch/addBook.html"
-    })
-    .when("/addauthor",{
-    	templateUrl:"adminbranch/addAuthor.html"
-    })
-    .when("/addgenre",{
-    	templateUrl:"adminbranch/addGenre.html"
-    })
-    .when("/addbranch",{
-    	templateUrl:"adminbranch/addBranch.html"
-    })
-    .when("/addborrower",{
-    	templateUrl:"adminbranch/addBorrower.html"
     })
 }]);

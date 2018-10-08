@@ -42,4 +42,4 @@ LibraryApp.factory("libraryService", function($http){
 		}
 		
 	}
-})
+});

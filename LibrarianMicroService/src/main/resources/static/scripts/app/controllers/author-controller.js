@@ -1,4 +1,3 @@
-
 LibraryApp.controller("authorController", function($scope, $http,
 		libraryService, libConstants, $window, $location) {
 
@@ -7,14 +6,38 @@ LibraryApp.controller("authorController", function($scope, $http,
 	// }
 	$scope.goToAddAuthor=function(){
 
-		$window.location("/addauthor");
-	initAuthor();
-	getAllBooks();
+//		$window.location = "#/addauthor";
+		
+		console.log($location.path());
+		
+		libraryService.initAuthor(
+				libConstants.ADMIN_RS_HOST + libConstants.INIT_AUTHOR).then( function(result) {
+					console.log("inside");
+					$scope.author = result;
+				});
+		
+		libraryService.getAllBooks(
+				libConstants.ADMIN_RS_HOST + libConstants.READ_ALL_BOOKS).then(
+				function(result) {
+					$scope.books = result;
+				});
+		
+    $scope.$watch('selected', function(nowSelected){
+	        
+	        if( ! nowSelected ){
+			    // if not selected then return
+	            return;
+	        }
+	        angular.forEach(nowSelected, function(val){
+	            $scope.selectedBooks.push( val );
+	        });
+	        	
+	    });
 
-
-	}
+	};
 
 	if ($location.path() === '/addauthor') {
+		console.log("again " + $location.path());
 		libraryService.initAuthor(
 				libConstants.ADMIN_RS_HOST + libConstants.INIT_AUTHOR).then( function(result) {
 					console.log("inside");
