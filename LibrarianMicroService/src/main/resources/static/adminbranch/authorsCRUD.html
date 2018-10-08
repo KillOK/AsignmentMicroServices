@@ -1,5 +1,7 @@
 <div class="container marketing" ng-Controller="authorController">
 
+	<a href="#/addauthor"><button  class="btn btn-secondary" role="button" ng-click="goToAddAuthor()">ADD AUTHOR</button></a><br>
+	<br>
 
     <table class="table">
         <thead class="thead-dark">
@@ -15,9 +17,9 @@
             <tr ng-repeat="a in authors | orderBy: 'authorName'">
                 <td ><!--{{a.authorId}}--> {{$index+1}}</th>
                 <td scope="col">{{a.authorName}}</td>
-                <td scope="col"><span ng-repeat="b in a.books">{{b.title==null?"":b.title}} <span ng-if="!$last">,</span> </span></td>
+                <td scope="col"><span ng-repeat="b in a.books track by $index">{{b.title==null?b.bookId:b.title}} <span ng-if="!$last">,</span> </span></td>
                 <td scope="col"><button type="button" class="btn btn-secondary" ng-click="editAuthor(a)">Edit</button></td>
-                <td scope="col"><button type="button" class="btn btn-dark" ng-click="deleteAuthor(a)">Delete</button></td>
+                <td scope="col"><button type="button" class="btn btn-dark" ng-click="deleteAuthor(a.authorId)">Delete</button></td>
             </tr>
 
         </tbody>

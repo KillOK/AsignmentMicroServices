@@ -48,7 +48,7 @@ public class AdminService {
 	public List<Author> readAllAuthors(@RequestParam(required = false) String searchString) {
 		List<Author> authors = new ArrayList<>();
 		try {
-			if (!searchString.isEmpty()) {
+			if (searchString!=null) {
 				authors = authorRepo.readAuthorsByName(searchString);
 			} else {
 				authors = (List<Author>) authorRepo.findAll();
@@ -76,10 +76,15 @@ public class AdminService {
 		}
 		return authors;
 	}
+	
+	@RequestMapping(value = "/lms/initAuthor", method = RequestMethod.GET, produces = "application/json")
+	public Author initAuthor() {
+		System.out.println("Author inited!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		return new Author();
+	}
 
-	@Transactional
-	@RequestMapping(value = "/lms/saveAuthor", method = RequestMethod.POST, consumes = "application/json")
-	public String saveAuthor(@RequestBody Author author) {
+	@RequestMapping(value = "/lms/saveAuthor", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public List<Author> saveAuthor(@RequestBody Author author) {
 		String returnString = "";
 		try {
 			if (author.getAuthorId() != null && author.getAuthorName() != null) {
@@ -96,7 +101,7 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllAuthors("");
 	}
 
 	////////////////////////////////////////// Books////////////////////////////////////////////////////////////
@@ -105,7 +110,7 @@ public class AdminService {
 	public List<Book> readAllBooks(@RequestParam(required = false) String searchString) {
 		List<Book> books = new ArrayList<>();
 		try {
-			if (!searchString.isEmpty()) {
+			if (searchString!=null) {
 				books = bookRepo.readBooksByTitle(searchString);
 			} else {
 				books = (List<Book>) bookRepo.findAll();
@@ -134,9 +139,8 @@ public class AdminService {
 		return books;
 	}
 
-	@Transactional
 	@RequestMapping(value = "/lms/updateBook", method = RequestMethod.POST, consumes = "application/json")
-	public String saveBook(@RequestBody Book book) {
+	public List<Book> saveBook(@RequestBody Book book) {
 		String returnString = "";
 		try {
 			if (book.getBookId() != null && book.getTitle() != null) {
@@ -153,13 +157,18 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllBooks("");
+	}
+	
+	@RequestMapping(value = "/lms/initBook", method = RequestMethod.GET, produces = "application/json")
+	public Book initBook() {
+		return new Book();
 	}
 
 /////////////////////////////////////////////////////////Genre///////////////////////////////////////////////////
 
-	@RequestMapping(value = "/lms/readAllGenres", method = RequestMethod.GET, produces = "application/json")
-	public List<Genre> readAllGenres(@RequestParam(required = false) String searchString) {
+	@RequestMapping(value = "/lms/readAllGenresByTitle", method = RequestMethod.GET, produces = "application/json")
+	public List<Genre> readAllGenresByTitle(@RequestParam(required = false) String searchString) {
 		List<Genre> genres = new ArrayList<>();
 		try {
 			if (searchString!=null&&!searchString.isEmpty()) {
@@ -167,6 +176,18 @@ public class AdminService {
 			} else {
 				genres = (List<Genre>) genreRepo.findAll();
 			}
+		} catch (Exception e) {
+			genres = (List<Genre>) genreRepo.findAll();
+			e.printStackTrace();
+		}
+		return genres;
+	}
+	
+	@RequestMapping(value = "/lms/readAllGenres", method = RequestMethod.GET, produces = "application/json")
+	public List<Genre> readAllGenres() {
+		List<Genre> genres = new ArrayList<>();
+		try {
+				genres = (List<Genre>) genreRepo.findAll();
 		} catch (Exception e) {
 			genres = (List<Genre>) genreRepo.findAll();
 			e.printStackTrace();
@@ -191,9 +212,8 @@ public class AdminService {
 		return genres;
 	}
 
-	@Transactional
 	@RequestMapping(value = "/lms/updateGenre", method = RequestMethod.POST, consumes = "application/json")
-	public String saveGenre(@RequestBody Genre genre) {
+	public List<Genre> saveGenre(@RequestBody Genre genre) {
 		String returnString = "";
 		try {
 			if (genre.getGenreId() != null && genre.getGenreName() != null) {
@@ -210,7 +230,13 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllGenres();
+	}
+	
+	@RequestMapping(value = "/lms/initGenre", method = RequestMethod.GET, produces = "application/json")
+	public Genre initGenre() {
+		System.out.println("Genre Inited");
+		return new Genre();
 	}
 	
 	///////////////////////////////////////////Publisher//////////////////////////////////////////////////////////////////
@@ -251,9 +277,8 @@ public class AdminService {
 		return sublishers;
 	}
 
-	@Transactional
 	@RequestMapping(value = "/lms/updatePublisher", method = RequestMethod.POST, consumes = "application/json")
-	public String savePublisher(@RequestBody Publisher genre) {
+	public List<Publisher> savePublisher(@RequestBody Publisher genre) {
 		String returnString = "";
 		try {
 			if (genre.getPublisherId() != null && genre.getPubName() != null) {
@@ -270,7 +295,12 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllPublishers("");
+	}
+	
+	@RequestMapping(value = "/lms/initPublisher", method = RequestMethod.GET, produces = "application/json")
+	public Publisher initPublisher() {
+		return new Publisher();
 	}
 	
 	////////////////////////////////////////////BookCopy/////////////////////////////////////////////////////////////
@@ -324,7 +354,7 @@ public class AdminService {
 
 	@Transactional
 	@RequestMapping(value = "/lms/updateBookCopy", method = RequestMethod.POST, consumes = "application/json")
-	public String saveBookCopy(@RequestBody BookCopy copy) {
+	public List<BookCopy> saveBookCopy(@RequestBody BookCopy copy) {
 		String returnString = "";
 		try {
 			if (copy.getBookCopyId()!=null) {
@@ -337,7 +367,12 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllBookCopys();
+	}
+	
+	@RequestMapping(value = "/lms/initBookCopy", method = RequestMethod.GET, produces = "application/json")
+	public BookCopy initBookCopy() {
+		return new BookCopy();
 	}
 	
 	///////////////////////////////////////Borrowers//////////////////////////////////////////////////////////
@@ -377,7 +412,7 @@ public class AdminService {
 	
 	@Transactional
 	@RequestMapping(value = "/lms/updateBorrower", method = RequestMethod.POST, consumes = "application/json")
-	public String saveBorrower(@RequestBody Borrower borrower) {
+	public List<Borrower> saveBorrower(@RequestBody Borrower borrower) {
 		String returnString = "";
 		try {
 			if (borrower.getCardNo() != null && (borrower.getName()!=null||borrower.getAdress()!=null||borrower.getPhone()!=null)) {
@@ -394,7 +429,12 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllBorrowers();
+	}
+	
+	@RequestMapping(value = "/lms/initBorrower", method = RequestMethod.GET, produces = "application/json")
+	public Borrower initBorrower() {
+		return new Borrower();
 	}
 	
 	
@@ -459,7 +499,7 @@ public class AdminService {
 	
 	
 	@RequestMapping(value = "/lms/updateBookLoan", method = RequestMethod.POST, consumes = "application/json")
-	public String saveBookLoan(@RequestBody BookLoan loan) {
+	public List<BookLoan> saveBookLoan(@RequestBody BookLoan loan) {
 		String returnString = "";
 		try {
 			if (loan.getBookLoanId()!=null) {
@@ -473,14 +513,14 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+		return readAllBookLoans();
 	}
 	
 	//Added new Date(id.getDueDate().getTime()+(24*3600*1000)) instead id.getDueDate(), because it lost one day, after parsing of json...
 
 	@Transactional
 	@RequestMapping(value = "/lms/overrideDueDate", method = RequestMethod.POST, consumes = "application/json")
-	public String overrideDueDate(@RequestBody BookLoan loan) {
+	public void overrideDueDate(@RequestBody BookLoan loan) {
 		String returnString = "";
 		try {
 			if (loan.getBookLoanId()!=null) {
@@ -496,7 +536,12 @@ public class AdminService {
 			e.printStackTrace();
 			returnString = "Error... try again";
 		}
-		return returnString;
+//		return returnString;
+	}
+	
+	@RequestMapping(value = "/lms/initBookLoan", method = RequestMethod.GET, produces = "application/json")
+	public BookLoan initBookLoan() {
+		return new BookLoan();
 	}
 	
 }
