@@ -1,40 +1,40 @@
 LibraryApp.controller("authorController", function($scope, $http,
-		libraryService, libConstants, $window, $location) {
+		libraryService, libConstants, $window, $location, Pagination) {
 
 	// function(){
 	// 	console.log($location.path() === '/addauthor');
 	// }
-	$scope.goToAddAuthor=function(){
-
-//		$window.location = "#/addauthor";
-		
-		console.log($location.path());
-		
-		libraryService.initAuthor(
-				libConstants.ADMIN_RS_HOST + libConstants.INIT_AUTHOR).then( function(result) {
-					console.log("inside");
-					$scope.author = result;
-				});
-		
-		libraryService.getAllBooks(
-				libConstants.ADMIN_RS_HOST + libConstants.READ_ALL_BOOKS).then(
-				function(result) {
-					$scope.books = result;
-				});
-		
-    $scope.$watch('selected', function(nowSelected){
-	        
-	        if( ! nowSelected ){
-			    // if not selected then return
-	            return;
-	        }
-	        angular.forEach(nowSelected, function(val){
-	            $scope.selectedBooks.push( val );
-	        });
-	        	
-	    });
-
-	};
+//	$scope.goToAddAuthor=function(){
+//
+////		$window.location = "#/addauthor";
+//		
+//		console.log($location.path());
+//		
+//		libraryService.initAuthor(
+//				libConstants.ADMIN_RS_HOST + libConstants.INIT_AUTHOR).then( function(result) {
+//					console.log("inside");
+//					$scope.author = result;
+//				});
+//		
+//		libraryService.getAllBooks(
+//				libConstants.ADMIN_RS_HOST + libConstants.READ_ALL_BOOKS).then(
+//				function(result) {
+//					$scope.books = result;
+//				});
+//		
+//    $scope.$watch('selected', function(nowSelected){
+//	        
+//	        if( ! nowSelected ){
+//			    // if not selected then return
+//	            return;
+//	        }
+//	        angular.forEach(nowSelected, function(val){
+//	            $scope.selectedBooks.push( val );
+//	        });
+//	        	
+//	    });
+//
+//	};
 
 	if ($location.path() === '/addauthor') {
 		console.log("again " + $location.path());
@@ -65,9 +65,11 @@ LibraryApp.controller("authorController", function($scope, $http,
 	} else {
 		libraryService.getAll(
 				libConstants.ADMIN_RS_HOST + libConstants.READ_AUTHORS).then(
-				function(result) {
-					$scope.authors = result;
-				});
+				function(data) {
+					$scope.authors = data;
+					$scope.pagination = Pagination.getNew(10);
+					$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
+				})
 	}
  
 
@@ -95,6 +97,9 @@ LibraryApp.controller("authorController", function($scope, $http,
 				libConstants.ADMIN_RS_HOST + libConstants.AUTHOR_CRUD,
 				authorToDelete).then(function(result) {
 			$scope.authors = result;
+			$scope.pagination = Pagination.getNew(10);
+			$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
+			$window.location = "#/authorsCRUD"
 		});
 	}
 	

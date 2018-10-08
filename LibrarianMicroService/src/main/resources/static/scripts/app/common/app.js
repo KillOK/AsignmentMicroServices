@@ -1,4 +1,4 @@
-var LibraryApp = angular.module("LibraryApp", ["ngRoute"/*, "simplePagination"*/]);
+var LibraryApp = angular.module("LibraryApp", ["ngRoute", 'simplePagination']);
 
 
     
