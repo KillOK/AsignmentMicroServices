@@ -1,5 +1,26 @@
 <div class="container marketing" ng-Controller="authorController">
 
+ <!-- -------------------------- Page Controll ----------------------------- -->
+
+	<div class="input-group">
+	
+		<div class="input-group-prepend">
+			<span class="input-group-text">Author Name</span>
+		</div> 
+		
+		<input type="text"  class="form-control"
+		id="validationCustomUsername" ng-model="searchString" placeholder="Author Name"
+		aria-describedby="inputGroupPrepend" required ng-change="searchAuthors(searchString)">
+			
+		<button  class="btn btn-secondary mx-1" role="button" ng-click="searchAuthor(searchString)">Search Author</button>
+		
+		<a href="#/addauthor"><button  class="btn btn-secondary mx-1" role="button" >ADD AUTHOR</button></a><br>
+	
+	</div>
+	
+	
+	<!-- -------------------      Pagination           ----------------------- -->
+	<br>
 	<div class="col-md-10">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href=""
@@ -12,9 +33,10 @@
 				ng-click="pagination.nextPage()">&raquo;</a></li>
 		</ul>
 	</div>
-
-	<a href="#/addauthor"><button  class="btn btn-secondary" role="button" >ADD AUTHOR</button></a><br>
-	<br>
+	
+	
+	
+	<!-- ------------------- Table ---------------------------------------------------- -->
 
     <table class="table">
         <thead class="thead-dark">
@@ -37,6 +59,8 @@
 
         </tbody>
     </table>
+    
+    <!-- -------------------      Pagination           ----------------------- -->
     
     <div class="col-md-10">
 		<ul class="pagination">

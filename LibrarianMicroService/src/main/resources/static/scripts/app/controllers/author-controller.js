@@ -99,11 +99,29 @@ LibraryApp.controller("authorController", function($scope, $http,
 			$scope.authors = result;
 			$scope.pagination = Pagination.getNew(10);
 			$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
-			$window.location = "#/authorsCRUD"
 		});
 	}
 	
 	
+	$scope.searchAuthor = function (searchString) {
+				if(searchString==""||searchString==null){
+					libraryService.getAll(libConstants.ADMIN_RS_HOST + libConstants.READ_AUTHORS).then(
+						function(data) {
+							console.log(searchString+" first block");
+							$scope.authors = data;
+							$scope.pagination = Pagination.getNew(10);
+							$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
+						})
+				}else{
+					libraryService.getAll(libConstants.ADMIN_RS_HOST + libConstants.READ_AUTHORS+"/"+searchString).then(
+						function(data) {
+							console.log(searchString +" second block");
+							$scope.authors = data;
+							$scope.pagination = Pagination.getNew(10);
+							$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
+						})
+				}
+	}
 
 });
 
