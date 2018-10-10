@@ -1,6 +1,6 @@
 LibraryApp.controller("genreController", function($scope, $http,
 		libraryService, libConstants, $window, $location) {
-
+	
 	if ($location.path() === '/addgenre') {
 		libraryService.initGenre(
 				libConstants.ADMIN_RS_HOST + libConstants.INIT_GENRE).then(
@@ -15,14 +15,18 @@ LibraryApp.controller("genreController", function($scope, $http,
 					$scope.books = result;
 				});
 		
+		$scope.bookList=[];
+		
     $scope.$watch('selected', function(nowSelected){
-	        
+    	
+    		
+    		
 	        if( ! nowSelected ){
 			    // if not selected then return
 	            return;
 	        }
 	        angular.forEach(nowSelected, function(val){
-	            $scope.selectedBooks.push( val );
+	        	
 	        });
 	        	
 	    });
@@ -38,14 +42,16 @@ LibraryApp.controller("genreController", function($scope, $http,
  
 
 	$scope.saveGenre = function() {
-		if($scope.selectedBooks!=null&&$scope.genre.books==null){
-			console.log($scope.genre.books);
-			console.log($scope.selectedBooks);
-			$scope.genre.books=$scope.selectedBooks;
-		}
+//		debugger;
+		if($scope.genre.books==null)$scope.genre.books=[];
+		if($scope.bookList!=null)$scope.bookList.forEach(function(item, i, arr) {
+			$scope.genre.books.push($scope.books[item]);
+		});
+		
+		var g = $scope.genre;
+		console.log(g);
 		libraryService.postObj(
-				libConstants.ADMIN_RS_HOST + libConstants.GENRE_CRUD,
-				$scope.genre).then(function(result) {
+				libConstants.ADMIN_RS_HOST + libConstants.GENRE_CRUD, g ).then(function(result) {
 			$scope.genres = result;
 			$window.location = "#/genresCRUD"
 		});

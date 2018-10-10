@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 	 */
 	@Entity
 	@Table(name="tbl_genre", catalog="library")
-	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="genreName", scope=Genre.class)
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="genreId", scope=Genre.class)
 	public class Genre {
 		@Id
 		@Column(name="genre_id")

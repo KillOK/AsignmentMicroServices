@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 		
 		private String authorName;
 		
-		@ManyToMany(fetch=FetchType.EAGER, mappedBy="authors")
+		@ManyToMany(fetch=FetchType.LAZY, mappedBy="authors")
 		private List<Book> books;
 		/**
 		 * @return the authorId

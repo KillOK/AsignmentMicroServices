@@ -89,14 +89,17 @@ public class AdminService {
 		String returnString = "";
 		try {
 			if (author.getAuthorId() != null && author.getAuthorName() != null) {
-				authorRepo.save(author);
-				returnString = "Auther updated sucessfully";
+				Author a = new Author();
+				a.setAuthorId(author.getAuthorId());
+				a.setAuthorName(author.getAuthorName());
+				authorRepo.save(a);
+				returnString = "Author updated sucessfully";
 			} else if (author.getAuthorId() != null) {
 				authorRepo.deleteById(author.getAuthorId());
-				returnString = "Auther deleted sucessfully";
+				returnString = "Author deleted sucessfully";
 			} else {
 				authorRepo.save(author);
-				returnString = "Auther saved sucessfully";
+				returnString = "Author saved sucessfully";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,7 +142,8 @@ public class AdminService {
 		}
 		return books;
 	}
-
+	
+	@Transactional
 	@RequestMapping(value = "/lms/updateBook", method = RequestMethod.POST, consumes = "application/json")
 	public List<Book> saveBook(@RequestBody Book book) {
 		String returnString = "";
